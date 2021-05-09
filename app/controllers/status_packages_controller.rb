@@ -7,7 +7,13 @@ class StatusPackagesController < ApplicationController
                                                                     password: 'AKOh8wjdYsJtNI6CFKaxPFLka',
                                                                     account_number: '802388543',
                                                                     meter: '100495015',
-                                                                    mode: 'test'}, "149331877648230")
+                                                                    mode: 'test'}, tracking_params)
         render json: result
+    end
+
+    private
+
+    def tracking_params
+        params.require(:tracking_number)
     end
 end
