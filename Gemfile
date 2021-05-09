@@ -28,6 +28,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # Gems
 gem 'fedex', '~> 3.10', '>= 3.10.11'
 gem 'rubocop', '~> 1.14', require: false
+gem 'sidekiq'
+gem 'faraday'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
