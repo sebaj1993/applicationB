@@ -1,27 +1,31 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe TrackingInformation, :type => :model do
-    subject { described_class.new(tracking_number: "123456789", 
-                                carrier: "aCarrier", status: 'OK')  }
+require 'rails_helper'
 
-    describe "Validations" do
-      it "is valid with valid attributes" do
-        expect(subject).to be_valid
-      end
+RSpec.describe TrackingInformation, type: :model do
+  subject do
+    described_class.new(tracking_number: '123456789',
+                        carrier: 'aCarrier', status: 'OK')
+  end
 
-      it "is not valid without a tracking_number" do
-        subject.tracking_number = nil
-        expect(subject).to_not be_valid
-      end
-
-      it "is not valid without an carrier" do
-        subject.carrier = nil
-        expect(subject).to_not be_valid
-      end
-
-      it "is not valid without an status" do
-        subject.status = nil
-        expect(subject).to_not be_valid
-      end
+  describe 'Validations' do
+    it 'is valid with valid attributes' do
+      expect(subject).to be_valid
     end
+
+    it 'is not valid without a tracking_number' do
+      subject.tracking_number = nil
+      expect(subject).to_not be_valid
+    end
+
+    it 'is not valid without an carrier' do
+      subject.carrier = nil
+      expect(subject).to_not be_valid
+    end
+
+    it 'is not valid without an status' do
+      subject.status = nil
+      expect(subject).to_not be_valid
+    end
+  end
 end
