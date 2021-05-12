@@ -11,7 +11,6 @@ module AdaptersTrackingInformation
         end
 
         def get_tracking_information_in_db(tracking_number, carrier, message_cannot_be_found)
-            byebug
             if TrackingInformation.exists?(:tracking_number => tracking_number)
                 last_result = TrackingInformation.last_tracking_information({tracking_number: tracking_number, carrier: carrier})
                 {:tracking_number => last_result.tracking_number, :status => last_result.status, :carrier => last_result.carrier}
@@ -27,7 +26,6 @@ module AdaptersTrackingInformation
         
         def tracking_information(credentials, tracking_number)
             begin
-                byebug
                 credentials = Fedex::Credentials.new(credentials)
                 fedex = Fedex::Request::TrackingInformation.new(credentials, {:tracking_number => tracking_number})
                 results = fedex.process_request
