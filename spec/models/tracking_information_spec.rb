@@ -8,22 +8,22 @@ RSpec.describe TrackingInformation, type: :model do
                         carrier: 'aCarrier', status: 'OK')
   end
 
-  describe 'Validations' do
-    it 'is valid with valid attributes' do
+  describe 'Validaciones' do
+    it 'Es valido con todos los atributos completos' do
       expect(subject).to be_valid
     end
 
-    it 'is not valid without a tracking_number' do
+    it 'No es valido sin el tracking_number' do
       subject.tracking_number = nil
       expect(subject).to_not be_valid
     end
 
-    it 'is not valid without an carrier' do
+    it 'No es valido sin un carrier' do
       subject.carrier = nil
       expect(subject).to_not be_valid
     end
 
-    it 'is not valid without an status' do
+    it 'No es valido sin un status' do
       subject.status = nil
       expect(subject).to_not be_valid
     end

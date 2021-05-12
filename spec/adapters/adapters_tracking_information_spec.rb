@@ -23,12 +23,48 @@ RSpec.describe AdaptersTrackingInformation::FedexTrackingInformation, type: :ada
     context 'En el caso de que el paquete fue delivered' do
       let(:status_code) { 'DL' }
 
-      it 'aumenta un registro al request exitoso' do
+      it 'Aumenta un registro de TrackingInformation' do
         expect { subject }.to change { TrackingInformation.count }.by(1)
       end
 
-      it 'respuesta exitoso' do
+      it 'Recibimos respuesta exitosa' do
         expect(subject).to eq({ tracking_number: '123456789', status: 'DELIVERED', carrier: 'FEDEX' })
+      end
+    end
+
+    context 'En el caso de que el paquete fue created' do
+      let(:status_code) { 'OC' }
+
+      it 'Aumenta un registro de TrackingInformation' do
+        expect { subject }.to change { TrackingInformation.count }.by(1)
+      end
+
+      it 'Recibimos respuesta exitosa' do
+        expect(subject).to eq({ tracking_number: '123456789', status: 'CREATED', carrier: 'FEDEX' })
+      end
+    end
+
+    context 'En el caso de que el paquete fue exception' do
+      let(:status_code) { 'DE' }
+
+      it 'Aumenta un registro de TrackingInformation' do
+        expect { subject }.to change { TrackingInformation.count }.by(1)
+      end
+
+      it 'Recibimos respuesta exitosa' do
+        expect(subject).to eq({ tracking_number: '123456789', status: 'EXCEPTION', carrier: 'FEDEX' })
+      end
+    end
+
+    context 'En el caso de que el paquete fue en transito' do
+      let(:status_code) { 'IT' }
+
+      it 'Aumenta un registro de TrackingInformation' do
+        expect { subject }.to change { TrackingInformation.count }.by(1)
+      end
+
+      it 'Recibimos respuesta exitosa' do
+        expect(subject).to eq({ tracking_number: '123456789', status: 'ON_TRANSIT', carrier: 'FEDEX' })
       end
     end
   end
@@ -40,7 +76,7 @@ RSpec.describe AdaptersTrackingInformation::FedexTrackingInformation, type: :ada
       )
     end
 
-    context 'Y tengamos registro de ese paquete' do
+    context 'Y tengamos registro de ese paquete en nuestra base de datos' do
       let!(:tracking_information_in_db) do
         TrackingInformation.create(tracking_number: '123456789', carrier: 'FEDEX', status: 'DELIVERED')
       end
@@ -50,14 +86,14 @@ RSpec.describe AdaptersTrackingInformation::FedexTrackingInformation, type: :ada
       end
     end
 
-    context 'Y no tengamos registro de ese paquete' do
+    context 'Y no tengamos registro de ese paquete en nuestra base de datos' do
       it 'Recibo respuesta de no se encuentra ese trucking number' do
         expect(subject).to eq({ message: 'This tracking number cannot be found. Please check the number or contact the sender.' })
       end
     end
   end
 
-  context 'En el caso de que devuelva un error de request fedex' do
+  context 'En el caso de que devuelva un error el request a fedex' do
     before do
       allow_any_instance_of(Fedex::Request::TrackingInformation).to receive(:process_request).and_raise(
         Fedex::RateError, 'ERROR'

@@ -5,15 +5,15 @@ require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
 RSpec.describe TrackingInformationFedexWorker, type: :worker do
-  it 'agrega una tarea a la queue' do
+  it 'Se agrega un job a la cola del worker' do
     expect do
       TrackingInformationFedexWorker.perform_async('123456789',
-                                                   'http://hola.com')
+                                                   'http://CallBackUrl.com')
     end.to change(TrackingInformationFedexWorker.jobs, :size).by(1)
   end
 
-  it 'request exitoso de post' do
-    expect(Faraday).to receive(:post).with('http://hola.com')
-    TrackingInformationFedexWorker.new.perform('123456789', 'http://hola.com')
+  it 'Envia request a CallbackUrl' do
+    expect(Faraday).to receive(:post).with('http://CallBackUrl.com')
+    TrackingInformationFedexWorker.new.perform('123456789', 'http://CallBackUrl.com')
   end
 end
